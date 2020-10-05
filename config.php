@@ -3,11 +3,12 @@
 server with default setting (user 'root' with no password) */
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'password');
-define('DB_NAME', 'lamp');
+define('DB_PASSWORD', 'root');
+define('DB_NAME', 'cloud_computing');
  
 /* Attempt to connect to MySQL database */
 $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$mysqli = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
  
 // Check connection
 if($link === false){
