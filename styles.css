@@ -1,0 +1,16 @@
+// register page
+
+
+body { 
+	font: 14px sans-serif; 
+}
+
+.wrapper {
+	width: 350px;
+}
+	
+.center { 
+	margin: auto; 
+	width: 60%; 
+	padding: 10px;
+}
