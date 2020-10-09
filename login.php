@@ -64,9 +64,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $username; 
 							$_SESSION["email"] = $email;
 							
-                            
-                            // Redirect user to welcome page
-                            header("location: welcome.php");
+                            $sql = "SELECT username_id FROM roster WHERE username_id=" . $id;
+                
+                            $result = $mysqli->query($sql);
+            
+                            if ($result && $result->num_rows > 0) {
+                                // Redirect to results page
+                                header("location: results.php");
+                            } else {
+                                // Redirect user to welcome page
+                                header("location: welcome.php");
+                            }
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";

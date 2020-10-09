@@ -112,16 +112,21 @@ th,	td {
 }
 
 .main-container {
-    width: 1000px;
-    margin: 0 auto;
+  width: 1000px;
+  margin: 0 auto;
 }
 
 .roster-dropdowns {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 10px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.roster-dropdowns select {
+  margin-bottom: 10px;
 }
 
 .roster-form {
-    width: 500px;
+  width: 500px;
 }
