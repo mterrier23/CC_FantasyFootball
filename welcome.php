@@ -10,6 +10,18 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+$sql = "SELECT * FROM stats";
+$result = mysqli_query($link, $sql);
+
+$stats = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+$qb = $rb1 = $rb2 = $wr1 = $wr2 = $te = "";
+
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+	
+}
+
 ?>
  
 <!DOCTYPE html>
@@ -27,91 +39,94 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 	</p>
 
 	<div class="main-container">
-		<div class="roster-dropdowns">
-			<label>Quarterback:</label>
-			<select>
-			<?php
-				$sql = "SELECT id, Player FROM stats WHERE Pos='QB'";
-				$result = $mysqli->query($sql);
+		<form class="roster-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+			<div class="roster-dropdowns">
+				<label>Quarterback:</label>
+				<select>
+				<?php
+					$sql = "SELECT id, Player FROM stats WHERE Pos='QB'";
+					$result = $mysqli->query($sql);
 
-				if ($result) {
-					while ($row = $result->fetch_assoc()) {
-						echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+					if ($result) {
+						while ($row = $result->fetch_assoc()) {
+							echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+						}
 					}
-				}
-			?>
-			</select>
+				?>
+				</select>
 
-			<label>Running Back 1:</label>
-			<select>
-			<?php
-				$sql = "SELECT id, Player FROM stats WHERE Pos='RB'";
-				$result = $mysqli->query($sql);
+				<label>Running Back 1:</label>
+				<select>
+				<?php
+					$sql = "SELECT id, Player FROM stats WHERE Pos='RB'";
+					$result = $mysqli->query($sql);
 
-				if ($result) {
-					while ($row = $result->fetch_assoc()) {
-						echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+					if ($result) {
+						while ($row = $result->fetch_assoc()) {
+							echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+						}
 					}
-				}
-			?>
-			</select>
+				?>
+				</select>
 
-			<label>Running Back 2:</label>
-			<select>
-			<?php
-				$sql = "SELECT id, Player FROM stats WHERE Pos='RB'";
-				$result = $mysqli->query($sql);
+				<label>Running Back 2:</label>
+				<select>
+				<?php
+					$sql = "SELECT id, Player FROM stats WHERE Pos='RB'";
+					$result = $mysqli->query($sql);
 
-				if ($result) {
-					while ($row = $result->fetch_assoc()) {
-						echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+					if ($result) {
+						while ($row = $result->fetch_assoc()) {
+							echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+						}
 					}
-				}
-			?>
-			</select>
+				?>
+				</select>
 
-			<label>Wide Receiver 1:</label>
-			<select>
-			<?php
-				$sql = "SELECT id, Player FROM stats WHERE Pos='WR'";
-				$result = $mysqli->query($sql);
+				<label>Wide Receiver 1:</label>
+				<select>
+				<?php
+					$sql = "SELECT id, Player FROM stats WHERE Pos='WR'";
+					$result = $mysqli->query($sql);
 
-				if ($result) {
-					while ($row = $result->fetch_assoc()) {
-						echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+					if ($result) {
+						while ($row = $result->fetch_assoc()) {
+							echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+						}
 					}
-				}
-			?>
-			</select>
+				?>
+				</select>
 
-			<label>Wide Receiver 2:</label>
-			<select>
-			<?php
-				$sql = "SELECT id, Player FROM stats WHERE Pos='WR'";
-				$result = $mysqli->query($sql);
+				<label>Wide Receiver 2:</label>
+				<select>
+				<?php
+					$sql = "SELECT id, Player FROM stats WHERE Pos='WR'";
+					$result = $mysqli->query($sql);
 
-				if ($result) {
-					while ($row = $result->fetch_assoc()) {
-						echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+					if ($result) {
+						while ($row = $result->fetch_assoc()) {
+							echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+						}
 					}
-				}
-			?>
-			</select>
+				?>
+				</select>
 
-			<label>Tight End:</label>
-			<select>
-			<?php
-				$sql = "SELECT id, Player FROM stats WHERE Pos='TE'";
-				$result = $mysqli->query($sql);
+				<label>Tight End:</label>
+				<select>
+				<?php
+					$sql = "SELECT id, Player FROM stats WHERE Pos='TE'";
+					$result = $mysqli->query($sql);
 
-				if ($result) {
-					while ($row = $result->fetch_assoc()) {
-						echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+					if ($result) {
+						while ($row = $result->fetch_assoc()) {
+							echo '<option value="' . $row['Player'] . '">' . $row['Player'] . '</option>';
+						}
 					}
-				}
-			?>
-			</select>
-		</div>
+				?>
+				</select>
+			</div>
+			<input type="submit" class="btn btn-primary" value="Submit">
+		</form>
 							
 		<!-- Modal for explaining column names -->
 		<button id="myBtn">Table Key</button>
@@ -123,22 +138,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 		<div class="modal-content">
 			<span class="close">&times;</span>
 			<p>
-				</br>Rk = Rank
 				</br>Pos = Position
 				</br>G = Games Played
 				</br>GS = Games Started
-				</br>Tgt = Pass Targets
 				</br>Rec = Receptions
 				</br>Ctch% = Catch Percentage
 				</br>Yds = Receiving Yards
-				</br>Y/R = Receiving Yards per Receptions
 				</br>TD = Receiving Touchdowns
 				</br>1D = First Downs Receiving
 				</br>Lng = Longest Reception
 				</br>Y/Tgt = Receiving Yards per Target
-				</br>R/G = Receptions Per Game
-				</br>Y/G = Receiving Yards Per Game
-				</br>Fmb = Fumbles	
 			</p>
 		</div>
 
@@ -147,137 +156,39 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 		
 			<input type="text" id="myInput" onkeyup="searchPlayer()" placeholder="Search Player Name" title="Type in a name">
 			<table id="statTable">
-			<!--<thead>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">Rk</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Player</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Team</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">Age</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(5)')" style="cursor:pointer">Pos</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(6)')" style="cursor:pointer">G</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(7)')" style="cursor:pointer">GS</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(8)')" style="cursor:pointer">Tgt</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(9)')" style="cursor:pointer">Rec</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(10)')" style="cursor:pointer">Ctch%</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(11)')" style="cursor:pointer">Yds</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(12)')" style="cursor:pointer">Y/R</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(13)')" style="cursor:pointer">TD</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(14)')" style="cursor:pointer">1D</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(15)')" style="cursor:pointer">Lng</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(16)')" style="cursor:pointer">Y/Tgt</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(17)')" style="cursor:pointer">R/G</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(18)')" style="cursor:pointer">Y/G</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(19)')" style="cursor:pointer">Fmb</th>
-			</thead>-->
 			<tr>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">Rk</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Player</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Team</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">Age</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(5)')" style="cursor:pointer">Pos</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(6)')" style="cursor:pointer">G</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(7)')" style="cursor:pointer">GS</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(8)')" style="cursor:pointer">Tgt</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(9)')" style="cursor:pointer">Rec</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(10)')" style="cursor:pointer">Ctch%</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(11)')" style="cursor:pointer">Yds</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(12)')" style="cursor:pointer">Y/R</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(13)')" style="cursor:pointer">TD</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(14)')" style="cursor:pointer">1D</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(15)')" style="cursor:pointer">Lng</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(16)')" style="cursor:pointer">Y/Tgt</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(17)')" style="cursor:pointer">R/G</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(18)')" style="cursor:pointer">Y/G</th>
-				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(19)')" style="cursor:pointer">Fmb</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(1)')" style="cursor:pointer">Player</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(2)')" style="cursor:pointer">Team</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(3)')" style="cursor:pointer">Age</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(4)')" style="cursor:pointer">Pos</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(5)')" style="cursor:pointer">G</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(6)')" style="cursor:pointer">GS</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(7)')" style="cursor:pointer">Rec</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(8)')" style="cursor:pointer">Ctch%</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(9)')" style="cursor:pointer">Yds</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(10)')" style="cursor:pointer">TD</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(11)')" style="cursor:pointer">1D</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(12)')" style="cursor:pointer">Lng</th>
+				<th onclick="w3.sortHTML('#statTable', '.item', 'td:nth-child(13)')" style="cursor:pointer">Y/Tgt</th>
 			</tr>
-			<!--<tbody>-->
-			<!--  <?php foreach ($stats as $stat): ?> -->
-				<!--<tr class="item">
-				<td><?php echo $stat['Rk']; ?></td>
+			 <?php foreach ($stats as $stat): ?>		<!-- NOTE -- FIX REFERENCE TO STATS -->
+				<tr class="item">
+				<td>John</td>
 				<td><?php echo $stat['Player']; ?></td>
 				<td><?php echo $stat['Team']; ?></td>
 				<td><?php echo $stat['Age']; ?></td>
 				<td><?php echo $stat['Pos']; ?></td>
 				<td><?php echo $stat['G']; ?></td>
 				<td><?php echo $stat['GS']; ?></td>
-				<td><?php echo $stat['Tgt']; ?></td>
 				<td><?php echo $stat['Rec']; ?></td>
 				<td><?php echo $stat['Ctch']; ?></td>
 				<td><?php echo $stat['Yds']; ?></td>
-				<td><?php echo $stat['YPR']; ?></td>
 				<td><?php echo $stat['TD']; ?></td>
-				<td><?php echo $stat['FD']; ?></td>
+				<td><?php echo $stat['OD']; ?></td>
 				<td><?php echo $stat['Lng']; ?></td>
 				<td><?php echo $stat['YPT']; ?></td>
-				<td><?php echo $stat['RPG']; ?></td>
-				<td><?php echo $stat['YPG']; ?></td>
-				<td><?php echo $stat['Fmb']; ?></td>
-				</tr>-->
-				<!-- sample input -->
-				<tr class="item">
-				<td>1</td>
-				<td>John</td>			 
-				<td>SEA</td>
-				<td>23</td>
-				<td>RB</td>
-				<td>3</td>
-				<td>5</td>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				<td>32</td>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				<td>3</td>
-				<td>2</td>
 				</tr>
-				<tr class="item">
-				<td>2</td>
-				<td>Alex</td>			 
-				<td>DEV</td>
-				<td>34</td>
-				<td>QB</td>
-				<td>2</td>
-				<td>7</td>
-				<td>8</td>
-				<td>1</td>
-				<td>9</td>
-				<td>6</td>
-				<td>8</td>
-				<td>3</td>
-				<td>6</td>
-				<td>7</td>
-				<td>4</td>
-				<td>3</td>
-				<td>8</td>
-				<td>2</td>
-				</tr>	
-				<tr class="item">
-				<td>3</td>
-				<td>Bob</td>			 
-				<td>OHIO</td>
-				<td>20</td>
-				<td>RB</td>
-				<td>3</td>
-				<td>5</td>
-				<td>4</td>
-				<td>8</td>
-				<td>4</td>
-				<td>4</td>
-				<td>32</td>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				<td>4</td>
-				<td>3</td>
-				<td>2</td>
-				</tr>
-			<!--  <?php endforeach;?> -->
-			<!--</tbody>-->
+			  <?php endforeach; ?>
 			</table>
 		</div>
 		<a href="welcome.php" class="btn btn-primary">Search</a>
