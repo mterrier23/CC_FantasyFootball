@@ -32,7 +32,8 @@ $currPoints = (int)$points[0];
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
+	<meta name="robots" content="noindex">
     <title>Results</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 	<link rel="stylesheet" href="style.css">
@@ -42,8 +43,9 @@ $currPoints = (int)$points[0];
 	<p class="signout">
         <a href="logout.php" class="btn">Sign Out</a>
 	</p>
-
-	<h1>Weekly Results</h1>
+	<div class="header">
+		<h1>Weekly Results</h1>
+    </div>
 	<div>
 		<table id="statTable">
 		  <tr>
@@ -110,11 +112,11 @@ $currPoints = (int)$points[0];
 
 		  <?php endforeach;  ?>
 		  <br>
-		  <h2><i> You scored
+		  <h2><i> You scored <b>
 			<?php
 			echo $currPoints; 
 			?> points!
-		  </i></h2>
+		  </b</i></h2>
 		</table>
 	</div>
 	

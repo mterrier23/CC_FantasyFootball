@@ -47,6 +47,7 @@ th,	td {
 
 .signout { 
     text-align: right;
+    box-shadow: 0 4px 6px -1px hsla(0, 0%, 0%, 0.1), 0 2px 4px -1px hsla(0, 0%, 0%, 0.06);
 }
 
 .modal {
@@ -129,4 +130,17 @@ th,	td {
 
 .roster-form {
   width: 500px;
+}
+
+.header {
+  padding: 50px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 36px;
+  padding-bottom: 10px;
+  border-bottom: 4px solid #d50a0a;
+  max-width: 300px;
+  margin: 0 auto;
 }
