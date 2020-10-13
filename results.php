@@ -18,6 +18,9 @@ $rosterTmp = "SELECT s.Player as Player, s.Team as Team FROM roster r, stats s W
 $rosterResult = mysqli_query($link, $rosterTmp);
 $players = mysqli_fetch_all($rosterResult, MYSQLI_ASSOC);
 
+$usersTmp = "SELECT * FROM users"
+$userResult = mysqli_query($link, $usersTmp);
+$users = mysqli_fetch_all($userResult, MYSQLI_ASSOC);
 
 $weeks = range(1, 17);
 
@@ -46,6 +49,61 @@ $currPoints = (int)$points[0];
 	<div class="header">
 		<h1>Weekly Results</h1>
     </div>
+	<div>
+		<table id="leaderBoard">
+			// this table is going to have the players compared to each other in the rows, and the weeks in the columns
+		  <tr>
+			<th>Player Name</th>
+			
+			<?php foreach ($weeks as $week): ?>  
+			<th>Week <?php echo $week?></th>
+			<?php endforeach; ?>
+			
+		  </tr>
+		  
+		  <?php foreach ($users as $user) : ?>
+		  <tr class="item">
+		  
+			<td><?php echo $user['username']; ?></td> 	<!-- NOTE -- confirm that 'username' is the correct column name -->
+			
+			<!-- the following code represents each column for each week for each player lol -->
+			<?php foreach ($weeks as $week): ?>  
+			<td> 
+				<!-- point for that week for that player -->
+				<?php
+				$weekInt = (int)$week;
+								
+				$s_rosterTmp = "SELECT s.Player as Player, s.Team as Team FROM roster r, stats s WHERE r.player_id = s.id AND r.username_id = $user['id'];";
+				$s_rosterResult = mysqli_query($link, $s_rosterTmp);
+				$s_players = mysqli_fetch_all($s_rosterResult, MYSQLI_ASSOC);
+			
+				foreach ($s_players as $s_player){ 
+					$newPoints = 0;
+					$playerName = $s_player['Player'];
+
+					$s_winningTemp =  "SELECT * FROM results r, stats s WHERE r.Week = $weekInt AND s.Player = '$playerName' AND s.Team = r.WinningTeam";
+								
+					$s_winningRes = mysqli_query($link, $s_winningTemp);
+
+					
+					$s_winVal = mysqli_fetch_all($s_winningRes, MYSQLI_ASSOC);
+
+					
+	
+					if(!empty($s_winVal)){$newPoints = 1;}
+					$currPoints = $currPoints + $newPoints;
+				}
+				echo $currPoints;
+			
+				?>
+			</td>
+			<?php endforeach; ?> <!-- end weeks loop for specific user -->
+          
+		  </tr>
+		  <?php endforeach;  ?> <!-- end users loop -->
+			
+		</table>
+	</div>
 	<div>
 		<table id="statTable">
 		  <tr>
