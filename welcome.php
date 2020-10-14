@@ -3,11 +3,11 @@
 session_start();
 
 require_once "config.php";
- 
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: login.php");
-    exit;
+
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if(!isset($_SESSION["loggedin"]) || (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === false)){
+	header("location: login.php");
+	exit;
 }
 
 $sql = "SELECT username_id FROM roster WHERE username_id=" . $_SESSION["id"];
@@ -224,7 +224,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 				<?php endforeach; ?>
 			</table>
 		</div>
-		<a href="welcome.php" class="btn btn-primary">Search</a>
 	</div>
 	
 <script>

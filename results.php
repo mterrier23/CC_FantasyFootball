@@ -7,6 +7,12 @@
 
 session_start();
 
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if(!isset($_SESSION["loggedin"]) || (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === false)){
+	header("location: login.php");
+	exit;
+}
+
 require_once "config.php";
  
 $sql = "SELECT * FROM stats";
@@ -18,7 +24,7 @@ $rosterTmp = "SELECT s.Player as Player, s.Team as Team FROM roster r, stats s W
 $rosterResult = mysqli_query($link, $rosterTmp);
 $players = mysqli_fetch_all($rosterResult, MYSQLI_ASSOC);
 
-$usersTmp = "SELECT * FROM users"
+$usersTmp = "SELECT * FROM users";
 $userResult = mysqli_query($link, $usersTmp);
 $users = mysqli_fetch_all($userResult, MYSQLI_ASSOC);
 
@@ -27,7 +33,10 @@ $weeks = range(1, 17);
 $pointsTmp = "SELECT points FROM users WHERE id = $id";     // id is passed from the session variables occurs in login.php
 $pointsResult = mysqli_query($link, $pointsTmp);
 $points = mysqli_fetch_all($pointsResult, MYSQLI_ASSOC);
-$currPoints = (int)$points[0];
+$currPoints = 0;
+
+$currUserPoints = 0;
+$user_id = 0;
 
 
 ?>
@@ -51,17 +60,22 @@ $currPoints = (int)$points[0];
     </div>
 	<div>
 		<table id="leaderBoard">
-			// this table is going to have the players compared to each other in the rows, and the weeks in the columns
+			<!-- this table is going to have the players compared to each other in the rows, and the weeks in the columns -->
 		  <tr>
 			<th>Player Name</th>
 			
 			<?php foreach ($weeks as $week): ?>  
-			<th>Week <?php echo $week?></th>
+			<th>W<?php echo $week?></th>
 			<?php endforeach; ?>
+			
+			<th>Final Points</th>
 			
 		  </tr>
 		  
-		  <?php foreach ($users as $user) : ?>
+		  <?php foreach ($users as $user) : 
+			$finalPoints = 0;			
+			$user_id = $user['id'];
+			?>
 		  <tr class="item">
 		  
 			<td><?php echo $user['username']; ?></td> 	<!-- NOTE -- confirm that 'username' is the correct column name -->
@@ -71,14 +85,13 @@ $currPoints = (int)$points[0];
 			<td> 
 				<!-- point for that week for that player -->
 				<?php
-				$weekInt = (int)$week;
-								
-				$s_rosterTmp = "SELECT s.Player as Player, s.Team as Team FROM roster r, stats s WHERE r.player_id = s.id AND r.username_id = $user['id'];";
+				$weekInt = (int)$week;			
+				$s_rosterTmp = "SELECT s.Player as Player, s.Team as Team FROM roster r, stats s WHERE r.player_id = s.id AND r.username_id = $user_id";
 				$s_rosterResult = mysqli_query($link, $s_rosterTmp);
 				$s_players = mysqli_fetch_all($s_rosterResult, MYSQLI_ASSOC);
-			
+				$newPoints = 0;
 				foreach ($s_players as $s_player){ 
-					$newPoints = 0;
+					
 					$playerName = $s_player['Player'];
 
 					$s_winningTemp =  "SELECT * FROM results r, stats s WHERE r.Week = $weekInt AND s.Player = '$playerName' AND s.Team = r.WinningTeam";
@@ -90,21 +103,37 @@ $currPoints = (int)$points[0];
 
 					
 	
-					if(!empty($s_winVal)){$newPoints = 1;}
-					$currPoints = $currPoints + $newPoints;
+					if(!empty($s_winVal)){$newPoints += 1;}
 				}
-				echo $currPoints;
+				echo $newPoints;
+				$finalPoints += $newPoints;
+
+				if ($user_id == $id){
+					$currUserPoints = $finalPoints;
+				}
+				//echo $currPoints;
+				// update currPoints into users table at points column
 			
 				?>
 			</td>
 			<?php endforeach; ?> <!-- end weeks loop for specific user -->
+			<td>
+			<?php echo $finalPoints; ?>
+			</td>
           
 		  </tr>
 		  <?php endforeach;  ?> <!-- end users loop -->
 			
 		</table>
 	</div>
+	<h2><i> You scored <b>
+			<?php
+			echo $currUserPoints;  
+			?> points!
+		  </b</i></h2>
 	<div>
+		<br>
+		<h2>Your Breakdown</h2>
 		<table id="statTable">
 		  <tr>
 			<th>Week</th>
@@ -169,12 +198,6 @@ $currPoints = (int)$points[0];
 			</tr>
 
 		  <?php endforeach;  ?>
-		  <br>
-		  <h2><i> You scored <b>
-			<?php
-			echo $currPoints; 
-			?> points!
-		  </b</i></h2>
 		</table>
 	</div>
 	
